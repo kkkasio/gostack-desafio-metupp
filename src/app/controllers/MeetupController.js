@@ -1,5 +1,5 @@
 import * as Yup from 'yup';
-import { isBefore, parseISO } from 'date-fns';
+import { isBefore, parseISO, startOfHour } from 'date-fns';
 import Meetup from '../models/Meetup';
 
 class MeetupController {
@@ -33,6 +33,35 @@ class MeetupController {
     });
 
     return res.json({ meetup });
+  }
+
+  async update(req, res) {
+    const meetup = await Meetup.findOne({
+      where: {
+        id: req.params.id,
+        user_id: req.userId,
+      },
+    });
+
+    /**
+     * vefificação: se o meetup existe.
+     */
+    if (!meetup)
+      return res.status(400).json({ error: 'Meetup does not exists' });
+
+    /**
+     * vefificação: se o usuario logado é o dono do meetup.
+     */
+    if (meetup.user_id !== req.userId)
+      return res.status(401).json({ error: 'You are not autorized' });
+
+    /**
+     * vefificação: se o meetup já aconteceu.
+     */
+    if (isBefore(parseISO(meetup.date), new Date()))
+      return res.status(400).json({ error: "Can't update past meetups." });
+
+    return res.json(meetup);
   }
 }
 
