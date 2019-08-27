@@ -3,7 +3,7 @@ module.exports = {
   host: 'localhost',
   username: 'postgres',
   password: 'docker',
-  database: 'meetapp',
+  database: 'meetup',
   define: {
     timestamps: true,
     underscored: true, // remove o padrão cammel case

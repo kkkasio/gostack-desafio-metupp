@@ -1,5 +1,5 @@
 import * as Yup from 'yup';
-import { isBefore, parseISO, startOfHour } from 'date-fns';
+import { isBefore, parseISO } from 'date-fns';
 import Meetup from '../models/Meetup';
 
 class MeetupController {
@@ -36,6 +36,23 @@ class MeetupController {
   }
 
   async update(req, res) {
+    const schema = Yup.object().shape({
+      title: Yup.string()
+        .required()
+        .min(5),
+      location: Yup.string()
+        .required()
+        .min(5),
+      date: Yup.date().required(),
+      description: Yup.string().required(),
+    });
+
+    /**
+     * verificação: dados de entrada
+     */
+    if (!(await schema.isValid(req.body)))
+      return res.status(400).json({ error: 'Validation Fails' });
+
     const meetup = await Meetup.findOne({
       where: {
         id: req.params.id,
@@ -44,10 +61,9 @@ class MeetupController {
     });
 
     /**
-     * vefificação: se o meetup existe.
+     * verificação: se o meetup existe
      */
-    if (!meetup)
-      return res.status(400).json({ error: 'Meetup does not exists' });
+    if (!meetup) return res.status(400).json({ error: 'Meetup not exists' });
 
     /**
      * vefificação: se o usuario logado é o dono do meetup.
@@ -58,8 +74,28 @@ class MeetupController {
     /**
      * vefificação: se o meetup já aconteceu.
      */
-    if (isBefore(parseISO(meetup.date), new Date()))
+    if (meetup.past)
       return res.status(400).json({ error: "Can't update past meetups." });
+
+    /**
+     * verificação: se a data a ser atualizada já passou
+     */
+    if (isBefore(parseISO(req.body.date), new Date()))
+      return res.status(400).json({ error: 'Meetup date invalid' });
+
+    await meetup.update(req.body);
+
+    return res.json(meetup);
+  }
+
+  async delete(req, res) {
+    const meetup = await Meetup.findByPk(req.params.id);
+
+    if (meetup.user_id !== req.userId)
+      return res.status(401).json({ error: 'Not authorized' });
+
+    if (meetup.past)
+      return res.status(400).json({ error: "Can't delete past meetups." });
 
     return res.json(meetup);
   }
