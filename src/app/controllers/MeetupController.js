@@ -97,7 +97,9 @@ class MeetupController {
     if (meetup.past)
       return res.status(400).json({ error: "Can't delete past meetups." });
 
-    return res.json(meetup);
+    await meetup.destroy();
+
+    return res.send();
   }
 }
 

@@ -25,6 +25,11 @@ class User extends Model {
     return this; // retorna o módulo que foi inicializado
   }
 
+  static associate(models) {
+    this.hasMany(models.Meetup);
+    this.hasMany(models.Subscription);
+  }
+
   checkPassword(password) {
     return bcrypt.compare(password, this.password_hash);
   }

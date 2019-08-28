@@ -6,6 +6,7 @@ import UserController from './app/controllers/UserController';
 import SessionController from './app/controllers/SessionController';
 import MeetupController from './app/controllers/MeetupController';
 import OrganizingController from './app/controllers/OrganizingController';
+import SubscriptionController from './app/controllers/SubscriptionController';
 
 const routes = Router();
 
@@ -19,6 +20,8 @@ routes.get('/meetups', MeetupController.index);
 routes.post('/meetups', MeetupController.store);
 routes.put('/meetups/:id', MeetupController.update);
 routes.delete('/meetups/:id', MeetupController.delete);
+routes.post('/meetups/:meetupId/subscription', SubscriptionController.store);
 
 routes.get('/organizing', OrganizingController.index);
+routes.get('/subscriptions', SubscriptionController.index);
 export default routes;
