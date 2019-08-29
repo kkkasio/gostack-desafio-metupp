@@ -18,7 +18,6 @@ class SubscriptionController {
       include: [User],
     });
 
-    console.log(meetup.date);
     /**
      * verificação: se o meetup já aconteceu
      */
@@ -28,13 +27,23 @@ class SubscriptionController {
     if (meetup.user_id === req.userId)
       return res.status(400).json({ error: 'You are owner this meetup' });
 
-    const sameHour = await Meetup.findOne({
+    // const sameHour = await Meetup.findOne({
+    //   where: {
+    //     date: meetup.date,
+    //   },
+    // });
+
+    const registered = await Subscription.findOne({
       where: {
-        date: meetup.date,
+        meetup_id: req.params.meetupId,
+        user_id: req.userId,
       },
     });
 
-    console.log(sameHour);
+    if (registered)
+      return res
+        .status(400)
+        .json({ error: 'You are subscribed to this meetup' });
 
     const subscription = await Subscription.create({
       user_id: req.userId,

@@ -1,10 +1,36 @@
 import * as Yup from 'yup';
-import { isBefore, parseISO } from 'date-fns';
+import { Op } from 'sequelize';
+import { isBefore, parseISO, startOfDay, endOfDay } from 'date-fns';
+
 import Meetup from '../models/Meetup';
+import User from '../models/User';
 
 class MeetupController {
   async index(req, res) {
-    return res.json({ true: 'ok index' });
+    const page = req.query.page || 1;
+    const where = {};
+
+    if (req.query.date) {
+      const date = parseISO(req.query.date);
+      where.date = {
+        [Op.between]: [startOfDay(date), endOfDay(date)],
+      };
+    }
+
+    const meetups = await Meetup.findAll({
+      where,
+      order: [['date', 'DESC']],
+      limit: 10,
+      offset: 10 * page - 10,
+      include: [
+        {
+          model: User,
+          attributes: ['name', 'email'],
+        },
+      ],
+    });
+
+    return res.json(meetups);
   }
 
   async store(req, res) {
@@ -15,6 +41,9 @@ class MeetupController {
       date: Yup.date().required(),
     });
 
+    /**
+     * verificação: validando dados de entrada
+     */
     if (!(await schema.isValid(req.body))) {
       return res.status(400).json({ error: 'Validation fails' });
     }
@@ -48,7 +77,7 @@ class MeetupController {
     });
 
     /**
-     * verificação: dados de entrada
+     * verificação: validação dados de entrada
      */
     if (!(await schema.isValid(req.body)))
       return res.status(400).json({ error: 'Validation Fails' });
@@ -91,9 +120,15 @@ class MeetupController {
   async delete(req, res) {
     const meetup = await Meetup.findByPk(req.params.id);
 
+    /**
+     * verificação: se o user é o dono do meetup
+     */
     if (meetup.user_id !== req.userId)
       return res.status(401).json({ error: 'Not authorized' });
 
+    /**
+     * verificação: se o meetup já aconteceu
+     */
     if (meetup.past)
       return res.status(400).json({ error: "Can't delete past meetups." });
 
