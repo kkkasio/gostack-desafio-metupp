@@ -10,7 +10,7 @@ module.exports = {
   database: DB_NAME,
   define: {
     timestamps: true, // ativa timestamps
-    underscored: true, // remove o padrão cammel case
-    underscoredAll: true, // remove o padrão cammel case para colunas e relacionamentos
+    underscored: true, // remove o padrão cammel case colocando underline
+    underscoredAll: true, // remove o padrão cammel case para colunas e relacionamentos colocando underline
   },
 };

@@ -7,6 +7,7 @@ import SessionController from './app/controllers/SessionController';
 import MeetupController from './app/controllers/MeetupController';
 import OrganizingController from './app/controllers/OrganizingController';
 import SubscriptionController from './app/controllers/SubscriptionController';
+import ProfileController from './app/controllers/ProfileController';
 
 const routes = Router();
 
@@ -24,4 +25,6 @@ routes.post('/meetups/:meetupId/subscription', SubscriptionController.store);
 
 routes.get('/organizing', OrganizingController.index);
 routes.get('/subscriptions', SubscriptionController.index);
+
+routes.post('/profiles', ProfileController.store);
 export default routes;
