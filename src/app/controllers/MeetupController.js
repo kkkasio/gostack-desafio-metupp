@@ -36,21 +36,16 @@ class MeetupController {
   async store(req, res) {
     const schema = Yup.object().shape({
       title: Yup.string().required(),
+      file_id: Yup.number().required(),
       description: Yup.string().required(),
       location: Yup.string().required(),
       date: Yup.date().required(),
     });
 
-    /**
-     * verificação: validando dados de entrada
-     */
     if (!(await schema.isValid(req.body))) {
       return res.status(400).json({ error: 'Validation fails' });
     }
 
-    /**
-     * Não deve ser possível cadastrar meetups com datas que já passaram.
-     */
     if (isBefore(parseISO(req.body.date), new Date()))
       return res.status(400).json({ error: 'Invalid Date' });
 
@@ -69,6 +64,7 @@ class MeetupController {
       title: Yup.string()
         .required()
         .min(5),
+      file_id: Yup.number().required(),
       location: Yup.string()
         .required()
         .min(5),
@@ -76,9 +72,6 @@ class MeetupController {
       description: Yup.string().required(),
     });
 
-    /**
-     * verificação: validação dados de entrada
-     */
     if (!(await schema.isValid(req.body)))
       return res.status(400).json({ error: 'Validation Fails' });
 
@@ -89,26 +82,14 @@ class MeetupController {
       },
     });
 
-    /**
-     * verificação: se o meetup existe
-     */
     if (!meetup) return res.status(400).json({ error: 'Meetup not exists' });
 
-    /**
-     * vefificação: se o usuario logado é o dono do meetup.
-     */
     if (meetup.user_id !== req.userId)
       return res.status(401).json({ error: 'You are not autorized' });
 
-    /**
-     * vefificação: se o meetup já aconteceu.
-     */
     if (meetup.past)
       return res.status(400).json({ error: "Can't update past meetups." });
 
-    /**
-     * verificação: se a data a ser atualizada já passou
-     */
     if (isBefore(parseISO(req.body.date), new Date()))
       return res.status(400).json({ error: 'Meetup date invalid' });
 
@@ -120,15 +101,9 @@ class MeetupController {
   async delete(req, res) {
     const meetup = await Meetup.findByPk(req.params.id);
 
-    /**
-     * verificação: se o user é o dono do meetup
-     */
     if (meetup.user_id !== req.userId)
       return res.status(401).json({ error: 'Not authorized' });
 
-    /**
-     * verificação: se o meetup já aconteceu
-     */
     if (meetup.past)
       return res.status(400).json({ error: "Can't delete past meetups." });
 

@@ -9,8 +9,8 @@ module.exports = {
   password: DB_PASS,
   database: DB_NAME,
   define: {
-    timestamps: true, // ativa timestamps
-    underscored: true, // remove o padrão cammel case
-    underscoredAll: true, // remove o padrão cammel case para colunas e relacionamentos
+    timestamps: true,
+    underscored: true,
+    underscoredAll: true,
   },
 };
