@@ -44,3 +44,7 @@ vai no package.json e troca o start,build,test trocar por **react-app-rewired**
 ## Configurando Reactotron
 
 yarn add reactotron-react-js
+
+## Proptypes
+
+yarn add prop-types
