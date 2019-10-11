@@ -1,5 +1,15 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { lighten } from 'polished';
+
+const rotate = keyframes`
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+`;
 
 export const Wrapper = styled.div`
   height: 100%;
@@ -68,4 +78,15 @@ export const Content = styled.div`
       opacity: 1;
     }
   }
+`;
+
+export const Loading = styled.div`
+  border: 4px solid rgba(255, 255, 255, 0.2);
+  border-left: 4px solid;
+  animation: ${rotate} 1s infinite linear;
+  border-radius: 50%;
+  width: 30px;
+  display: flex;
+  margin: 0 auto;
+  height: 30px;
 `;

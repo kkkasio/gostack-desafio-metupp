@@ -18,7 +18,7 @@ class UserController {
     const userExists = await User.findOne({ where: { email: req.body.email } });
 
     if (userExists)
-      return res.status(400).json({ error: 'User aready exists' });
+      return res.status(400).json({ error: 'Email aready in use' });
 
     const { id, email, name } = await User.create(req.body);
 

@@ -3,13 +3,16 @@ import { Link } from 'react-router-dom';
 import { Form, Input } from '@rocketseat/unform';
 import * as Yup from 'yup';
 
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { Loading } from '~/pages/_layouts/auth/styles';
+
 import { signInRequest } from '~/store/modules/auth/actions';
 
 import logo from '~/assets/logo.png';
 
 export default function SignIn() {
   const dispatch = useDispatch();
+  const loading = useSelector(state => state.auth.loading);
 
   function handleSubmit({ email, password }) {
     dispatch(signInRequest(email, password));
@@ -35,7 +38,8 @@ export default function SignIn() {
           name="password"
           placeholder="Sua senha secreta"
         />
-        <button type="submit">Acessar</button>
+
+        <button type="submit">{loading ? <Loading /> : 'Acessar'}</button>
       </Form>
       <Link to="/register">Criar conta grátis</Link>
     </>

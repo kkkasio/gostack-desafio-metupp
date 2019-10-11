@@ -12,8 +12,24 @@ export function signInSuccess(token, user) {
   };
 }
 
+export function singUpRequest(name, email, password) {
+  return {
+    type: '@auth/SIGN_UP_REQUEST',
+    payload: {
+      name,
+      email,
+      password,
+    },
+  };
+}
+export function signUpSucess() {
+  return {
+    type: '@auth/SIGN_UP_SUCCESS',
+  };
+}
+
 export function signFailure() {
   return {
-    type: '@auth_SIGN_FAILURE',
+    type: '@auth/SIGN_FAILURE',
   };
 }
