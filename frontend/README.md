@@ -68,3 +68,11 @@ yarn add redux redux-saga react-redux reactotron-redux reactotron-redux-saga imm
 ## axios
 
 > realizar requisiçõess para a api
+
+## react toastify
+
+> incluir o css, botar o toastcontainer no global, e usar toast nas páginas necesárias
+
+## persistir os dados do usuário no storage do navegador
+
+> yarn add redux-persist
