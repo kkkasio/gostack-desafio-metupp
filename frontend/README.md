@@ -40,3 +40,7 @@ yarn add babel-plugin-root-import -D
 vai no package.json e troca o start,build,test trocar por **react-app-rewired**
 
 > yarn add eslint-import-resolver-babel-plugin-root-import -D
+
+## Configurando Reactotron
+
+yarn add reactotron-react-js
