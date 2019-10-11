@@ -1,5 +1,6 @@
 import React from 'react';
 import { Router } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
 import { Provider } from 'react-redux';
 
 import '~/config/ReactotronConfig';
@@ -16,6 +17,7 @@ function App() {
     <Provider store={store}>
       <Router history={history}>
         <GlobalStyle />
+        <ToastContainer autoclose={3000} />
         <Routes />
       </Router>
     </Provider>
