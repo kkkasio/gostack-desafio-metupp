@@ -45,10 +45,18 @@ vai no package.json e troca o start,build,test trocar por **react-app-rewired**
 
 yarn add reactotron-react-js
 
+> fazer o debug de forma mais fácil
+
 ## Proptypes
 
 yarn add prop-types
 
+> validar props passada para os componentes
+
 ## unform
 
 > lib para facilitar a criação de formulários
+
+## yup
+
+> validação dos formulários
