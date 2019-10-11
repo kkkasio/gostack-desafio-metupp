@@ -64,3 +64,7 @@ yarn add prop-types
 ## redux, redux-saga, immer (feat reactotron)
 
 yarn add redux redux-saga react-redux reactotron-redux reactotron-redux-saga immer
+
+## axios
+
+> realizar requisiçõess para a api

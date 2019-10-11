@@ -3,9 +3,18 @@ import { Link } from 'react-router-dom';
 import { Form, Input } from '@rocketseat/unform';
 import * as Yup from 'yup';
 
+import { useDispatch } from 'react-redux';
+import { signInRequest } from '~/store/modules/auth/actions';
+
 import logo from '~/assets/logo.png';
 
 export default function SignIn() {
+  const dispatch = useDispatch();
+
+  function handleSubmit({ email, password }) {
+    dispatch(signInRequest(email, password));
+  }
+
   const schema = Yup.object().shape({
     email: Yup.string()
       .email()
@@ -15,9 +24,6 @@ export default function SignIn() {
       .min(6, 'A senha deve ter pelo menos 6 caracteres'),
   });
 
-  function handleSubmit(data) {
-    console.tron.log(data);
-  }
   return (
     <>
       <img src={logo} alt="Metapp" />
