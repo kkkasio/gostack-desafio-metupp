@@ -60,3 +60,7 @@ yarn add prop-types
 ## yup
 
 > validação dos formulários
+
+## redux, redux-saga, immer (feat reactotron)
+
+yarn add redux redux-saga react-redux reactotron-redux reactotron-redux-saga immer
