@@ -1,7 +1,28 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import { Form, Input } from '@rocketseat/unform';
 
-// import { Container } from './styles';
+import logo from '~/assets/logo.png';
 
 export default function SignUp() {
-  return <h1>cadassstro</h1>;
+  function handleSubmit(data) {
+    console.tron.log(data);
+  }
+  return (
+    <>
+      <img src={logo} alt="" />
+
+      <Form onSubmit={handleSubmit}>
+        <Input type="text" name="name" placeholder="Seu nome completo" />
+        <Input type="email" name="email" placeholder="Seu melhor email" />
+        <Input
+          type="password"
+          name="password"
+          placeholder="Sua senha secreta"
+        />
+        <button type="submit">Criar conta grátis</button>
+      </Form>
+      <Link to="/">Já tenho conta</Link>
+    </>
+  );
 }
