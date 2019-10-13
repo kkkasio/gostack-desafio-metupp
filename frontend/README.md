@@ -76,3 +76,7 @@ yarn add redux redux-saga react-redux reactotron-redux reactotron-redux-saga imm
 ## persistir os dados do usuário no storage do navegador
 
 > yarn add redux-persist
+
+## react icons
+
+> yarn add react-icons
