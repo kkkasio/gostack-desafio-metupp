@@ -80,3 +80,7 @@ yarn add redux redux-saga react-redux reactotron-redux reactotron-redux-saga imm
 ## react icons
 
 > yarn add react-icons
+
+## date-fns
+
+> yarn add date-fns
