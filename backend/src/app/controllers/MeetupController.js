@@ -4,6 +4,7 @@ import { isBefore, parseISO, startOfDay, endOfDay } from 'date-fns';
 
 import Meetup from '../models/Meetup';
 import User from '../models/User';
+import File from '../models/File';
 
 class MeetupController {
   async index(req, res) {
@@ -110,6 +111,19 @@ class MeetupController {
     await meetup.destroy();
 
     return res.send();
+  }
+
+  async show(req, res) {
+    const meetup = await Meetup.findByPk(req.params.id, {
+      include: [
+        {
+          model: File,
+          as: 'banner',
+          attributes: ['id', 'path', 'url'],
+        },
+      ],
+    });
+    return res.json(meetup);
   }
 }
 
