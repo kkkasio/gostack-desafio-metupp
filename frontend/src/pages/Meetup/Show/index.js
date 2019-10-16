@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 
 import { useParams } from 'react-router-dom';
+import { confirmAlert } from 'react-confirm-alert';
+import { toast } from 'react-toastify';
 import {
   MdCancel,
   MdViewHeadline,
@@ -19,6 +21,7 @@ import {
   Banner,
   Description,
   Footer,
+  Delete,
 } from './styles';
 
 import history from '~/services/history';
@@ -29,24 +32,68 @@ export default function Show() {
 
   useEffect(() => {
     async function loadMeetup() {
-      const response = await api.get(`meetups/${meetappId}`);
+      try {
+        const response = await api.get(`meetups/${meetappId}`);
 
-      const { date } = response.data;
+        const { date } = response.data;
 
-      const data = {
-        ...response.data,
-        dateFormated: format(parseISO(date), "dd 'de' MMMM', às ' h'h' ", {
-          locale: pt,
-        }),
-      };
+        const data = {
+          ...response.data,
+          dateFormated: format(parseISO(date), "dd 'de' MMMM', às ' h'h' ", {
+            locale: pt,
+          }),
+        };
 
-      setMeetapp(data);
+        setMeetapp(data);
+      } catch (error) {
+        toast.error('Algo deu errado');
+        history.push('/dashboard');
+      }
     }
+
     loadMeetup();
   }, [meetappId]);
 
   function handleEdit(id) {
     history.push(`/edit/${id}`);
+  }
+
+  async function handleDelete(id) {
+    try {
+      await api.delete(`meetups/${id}`);
+      toast.success('Meetup deletado com sucesso!');
+      history.push('/dashboard');
+    } catch (err) {
+      toast.error('Erro ao deletar Meetap!');
+    }
+  }
+
+  function showAllert(id) {
+    confirmAlert({
+      customUI: ({ onClose }) => {
+        return (
+          <Delete>
+            <h1>Você tem certeza?</h1>
+            <p>Deseja realmente deletar esse Meetap?</p>
+            <div>
+              <Button type="button" onClick={onClose} color="#4DBAF9">
+                Não, Voltar
+              </Button>
+              <Button
+                color="#D44059"
+                type="button"
+                onClick={() => {
+                  handleDelete(id);
+                  onClose();
+                }}
+              >
+                Sim, Deletar!
+              </Button>
+            </div>
+          </Delete>
+        );
+      },
+    });
   }
 
   return (
@@ -63,7 +110,11 @@ export default function Show() {
               >
                 <MdViewHeadline size={25} color="#fff" /> Editar{' '}
               </Button>
-              <Button type="button" color="#D44059">
+              <Button
+                type="button"
+                onClick={() => showAllert(meetapp.id)}
+                color="#D44059"
+              >
                 <MdCancel size={25} color="#fff" /> Cancelar
               </Button>
             </div>

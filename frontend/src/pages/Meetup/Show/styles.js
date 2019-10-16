@@ -87,3 +87,28 @@ export const Footer = styled.div`
     }
   }
 `;
+
+export const Delete = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-items: center;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+  color: #fff;
+
+  h1 {
+    margin-bottom: 15px;
+    font-size: 36px;
+  }
+
+  p {
+    font-size: 18px;
+  }
+
+  div {
+    margin: 20px 0px;
+    display: flex;
+  }
+`;
