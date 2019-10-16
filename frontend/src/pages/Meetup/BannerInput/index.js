@@ -23,6 +23,13 @@ export default function BannerInput() {
     }
   }, [ref.current]); //eslint-disable-line
 
+  useEffect(() => {
+    if (defaultValue) {
+      setPreview(defaultValue.url);
+      setBanner(defaultValue.id);
+    }
+  }, [defaultValue]);
+
   async function handleChange(event) {
     const data = new FormData();
     data.append('file', event.target.files[0]);
@@ -33,6 +40,7 @@ export default function BannerInput() {
     setPreview(url);
     setBanner(id);
   }
+
   return (
     <Container>
       <label htmlFor="banner">

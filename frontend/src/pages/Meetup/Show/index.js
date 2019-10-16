@@ -10,7 +10,6 @@ import {
 import { parseISO, format } from 'date-fns';
 import pt from 'date-fns/locale/pt';
 import api from '~/services/api';
-import history from '~/services/history';
 
 import {
   Container,
@@ -22,17 +21,17 @@ import {
   Footer,
 } from './styles';
 
+import history from '~/services/history';
+
 export default function Show() {
-  const [meetup, setMeetup] = useState({});
-  const { meetupId } = useParams();
+  const [meetapp, setMeetapp] = useState({});
+  const { meetappId } = useParams();
 
   useEffect(() => {
     async function loadMeetup() {
-      const response = await api.get(`meetups/${meetupId}`);
+      const response = await api.get(`meetups/${meetappId}`);
 
       const { date } = response.data;
-
-      console.tron.log(response.data);
 
       const data = {
         ...response.data,
@@ -41,20 +40,28 @@ export default function Show() {
         }),
       };
 
-      setMeetup(data);
+      setMeetapp(data);
     }
     loadMeetup();
-  }, [meetupId]);
+  }, [meetappId]);
+
+  function handleEdit(id) {
+    history.push(`/edit/${id}`);
+  }
 
   return (
     <Container>
       <Meetup>
         <Action>
-          {meetup.title}
-          {!meetup.past && (
+          {meetapp.title}
+          {!meetapp.past && (
             <div>
-              <Button type="button" color="#4DBAF9">
-                <MdViewHeadline size={25} color="#fff" /> Editar
+              <Button
+                type="button"
+                onClick={() => handleEdit(meetapp.id)}
+                color="#4DBAF9"
+              >
+                <MdViewHeadline size={25} color="#fff" /> Editar{' '}
               </Button>
               <Button type="button" color="#D44059">
                 <MdCancel size={25} color="#fff" /> Cancelar
@@ -63,19 +70,19 @@ export default function Show() {
           )}
         </Action>
         <Banner>
-          {console.tron.log(meetup.banner)}
-          <img src={meetup.banner && meetup.banner.url} alt="Banner" />
+          {console.tron.log(meetapp.banner)}
+          <img src={meetapp.banner && meetapp.banner.url} alt="Banner" />
         </Banner>
 
-        <Description>{meetup.description}</Description>
+        <Description>{meetapp.description}</Description>
 
         <Footer>
           <div>
-            <MdDateRange size={25} color="#fff" /> {meetup.dateFormated}
+            <MdDateRange size={25} color="#fff" /> {meetapp.dateFormated}
           </div>
           <div>
             <MdLocationOn size={25} color="#fff" />
-            {meetup.location}
+            {meetapp.location}
           </div>
         </Footer>
       </Meetup>
