@@ -6,6 +6,7 @@ class OrganizingController {
       where: {
         user_id: req.userId,
       },
+      order: [['date', 'ASC']],
     });
 
     return res.json(meetups_user);

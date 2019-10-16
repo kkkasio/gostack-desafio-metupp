@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
+
 import { Link } from 'react-router-dom';
 import { MdAdd, MdClear } from 'react-icons/md';
 import { parseISO, format } from 'date-fns';
 import pt from 'date-fns/locale/pt-BR';
-import { Container, Header, Meetups, Meetup, Empty } from './styles';
-
+import history from '~/services/history';
 import api from '~/services/api';
+
+import { Container, Header, Meetups, Meetup, Empty } from './styles';
 
 export default function Dashboard() {
   const [meetups, setMeetups] = useState([]);
@@ -13,19 +15,21 @@ export default function Dashboard() {
   useEffect(() => {
     async function loadMeetups() {
       const response = await api.get('organizing');
-
-      console.tron.log(response.data);
       setMeetups(response.data);
     }
 
     loadMeetups();
   }, []);
 
+  function navigateNewMeetup() {
+    history.push('/new');
+  }
+
   return (
     <Container>
       <Header>
         <h1>Meus meetups</h1>
-        <button type="button">
+        <button type="button" onClick={navigateNewMeetup}>
           <MdAdd color="#fff" size={25} /> Novo meetup
         </button>
       </Header>

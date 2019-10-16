@@ -1,12 +1,13 @@
 import React from 'react';
+
 import { useSelector, useDispatch } from 'react-redux';
 import { Form, Input } from '@rocketseat/unform';
 import { MdCheckCircle } from 'react-icons/md';
 import * as Yup from 'yup';
 
-import { Container } from './styles';
-
 import { profileUpdateRequest } from '~/store/modules/user/actions';
+
+import { Container } from './styles';
 
 export default function Profile() {
   const profile = useSelector(state => state.user.profile);
@@ -18,11 +19,11 @@ export default function Profile() {
 
   const schema = Yup.object().shape({
     name: Yup.string()
-      .required()
-      .min(3),
+      .required('O nome é obrigatório')
+      .min(3, 'O nome deve ter pelo menos 3 caracteres'),
     email: Yup.string()
       .email()
-      .required(),
+      .required('O email é obrigatório'),
     oldPassword: Yup.string(),
     password: Yup.string().when('oldPassword', (oldPassword, field) =>
       oldPassword
@@ -34,7 +35,7 @@ export default function Profile() {
     confirmPassword: Yup.string().when('password', (password, field) =>
       password
         ? field
-            .required('A confirmação da Nova Senha é obrigatório')
+            .required('A confirmação da Nova Senha é obrigatória')
             .oneOf([Yup.ref('password'), null], 'As senhas não são iguais')
         : field
     ),
