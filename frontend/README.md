@@ -21,7 +21,7 @@ yarn add history
 yarn add customize-cra react-app-rewired -D (permite editar as configurações do babel)
 cria um arquivo config-overrides.js e seta as config
 
-```js
+```javascript
 /* eslint-disable import/no-extraneous-dependencies */
 const { addBabelPlugin, override } = require('customize-cra');
 
